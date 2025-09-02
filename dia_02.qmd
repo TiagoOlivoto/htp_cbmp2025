@@ -6,25 +6,28 @@ title: "Scripts - 04/09/2025"
 
 In this material, the mosaics used for application are described as follows:
 
-| Name | Width | Height | Bands | Description | Source |
-|------------|------------|------------|------------|------------|------------|
-| dsm folder |  |  |  |  |  |
-| `dsm.tif` | 2837 | 2770 | Single layer | Digital Surface Model | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |
-| `dtm.tif` | 2837 | 2770 | Single layer | Digital Terrain Model | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |
-| `mask.tif` | 2837 | 2770 | Single layer | DSM Mask | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |
-| `ortho.tif` | 5669 | 6026 | R, G, B | Mosaic of a soybean breeding field | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |
-| growth_models folder |  |  |  |  |  |
-| `DAP_4_05-11-2021.tif` | \- | \- | Single layer | Digital Surface Model | [Filipe Mathias](https://github.com/filipematias23/Bison-Fly) |
-| `...` | ... | ... | ... | ... |  |
-| `DAP_80_07-26-2021.tif` | \- | \- | Single layer | Digital Surface Model | [Filipe Matias](https://github.com/filipematias23/Bison-Fly) |
-| lettuce folder |  |  |  |  |  |
-| `lettuce.tif` | 1456 | 2998 | R,G,B | Orthomosaic of a lettuce experiment | [This paper](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0274731) |
-| timeseries folder (39 files) |  |  |  |  |  |
-| `cropped_2019-08-22.tif` | 6982 | 5613 | RGB | Time series of a soybean field | [Leonardo Volpato](https://www.linkedin.com/in/leonardo-volpato/) |
-| `...` | ... | ... | ... | ... | ... |
-| `cropped_2019-10-14.tif` | 6982 | 5613 | RGB | Time series of a soybean field |  |
-| `potato.tif` | 5202 | 4665 | R, G, B | Mosaic of a potato breeding field | [Gustavo Nandi](https://www.linkedin.com/in/gustavo-nandi-035905127/) |
-| `wheat_ndsu.tif` | 768 | 3120 | B, G, R, RE, NIR | Mosaic of a wheat breeding area | [Filipe Matias](https://github.com/filipematias23/Bison-Fly) |
+| Name | Width | Height | Bands | Description | Source |   |   |   |   |
+|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|
+| dsm folder |  |  |  |  |  |  |  |  |  |
+| `dsm.tif` | 2837 | 2770 | Single layer | Digital Surface Model | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| `dtm.tif` | 2837 | 2770 | Single layer | Digital Terrain Model | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| `mask.tif` | 2837 | 2770 | Single layer | DSM Mask | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| `ortho.tif` | 5669 | 6026 | R, G, B | Mosaic of a soybean breeding field | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| growth_models folder |  |  |  |  |  |  |  |  |  |
+| `DAP_4_05-11-2021.tif` | \- | \- | Single layer | Digital Surface Model | [Filipe Mathias](https://github.com/filipematias23/Bison-Fly) |  |  |  |  |
+| `...` | ... | ... | ... | ... |  |  |  |  |  |
+| `DAP_80_07-26-2021.tif` | \- | \- | Single layer | Digital Surface Model | [Filipe Matias](https://github.com/filipematias23/Bison-Fly) |  |  |  |  |
+| lettuce folder |  |  |  |  |  |  |  |  |  |
+| `lettuce.tif` | 1456 | 2998 | R,G,B | Orthomosaic of a lettuce experiment | [This paper](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0274731) |  |  |  |  |
+| maturity folder (10 rasters) |  |  |  |  |  |  |  |  |  |
+| `cropped_09-10-2024` | 10812 | 1460 | R,G,B | Time series of a soybean field | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| `...` | ... | ... | ... | ... | ... |  |  |  |  |
+| `cropped_10-11-2024` | 10812 | 1460 | R,G,B |  |  |  | Time series of a soybean field |  |  |
+| potato folder |  |  |  |  |  |  |  |  |  |
+| `potato.tif` | 5202 | 4665 | R, G, B | Mosaic of a potato breeding field | [Gustavo Nandi](https://www.linkedin.com/in/gustavo-nandi-035905127/) |  |  |  |  |
+| wheat folder |  |  |  |  |  |  |  |  |  |
+| `wheat_ndsu.tif` | 768 | 3120 | B, G, R, RE, NIR | Mosaic of a wheat breeding area | [Filipe Matias](https://github.com/filipematias23/Bison-Fly) |  |  |  |  |
+| `wheat_ufv.tif` | 2029 | 2120 | R,G,B,RE,NIR |  | [Maicon Nardino](https://www.linkedin.com/in/maicon-nardino-091253268/) |  |  |  |  |
 
 In this material, I will show some examples that uses functions from {`pliman`} package, but all the practical exercices will be made using {`plimanshiny`}.
 
@@ -167,7 +170,6 @@ res$result_plot
 bm + shapefile_view(res$result_plot, attribute = "median.NDVI")
 ```
 
-
 ## Segment the plots
 
 ```{r}
@@ -187,7 +189,6 @@ res <-
 bm +
   shapefile_view(res$result_plot, attribute = "coverage")
 ```
-
 
 ## Count and measure plants
 
@@ -445,7 +446,6 @@ points(p2$x, p2$y, pch = 16,  cex = 2, col = "red")
 
 A Canopy Height Model (CHM) represents the height of vegetation or structures above the ground surface, making it a crucial tool for analyzing vegetation structure and biomass. It is derived by subtracting a Digital Terrain Model (DTM), which shows the bare earth surface, from a Digital Surface Model (DSM), which captures the elevation of all surface objects,like plants. By comparing these two models, the CHM provides detailed insights into the height of vegetation, enabling accurate assessments of canopy cover and plant growth in agricultural or forested landscapes.
 
-
 ### DSM and DTM are available
 
 ```{r }
@@ -517,6 +517,7 @@ par(mfrow = c(1, 1))
 ```
 
 ## Plant maturity
+
 ```{r}
 library(pliman)
 library(tidyverse)
@@ -621,7 +622,6 @@ bm + shapefile_view(mat |> sf::st_buffer(0.22), attribute = "mat_vndvi")
 
 
 ```
-
 
 ## Timeseries (plimanshiny)
 

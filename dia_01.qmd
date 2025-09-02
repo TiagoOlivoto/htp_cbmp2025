@@ -11,7 +11,6 @@ library(pliman)
 library(tidyverse)
 library(ggridges)
 
-
 ```
 
 
@@ -100,7 +99,6 @@ The `image_index()` function constructs image indices using Red, Green, Blue, Re
 
 ```{r}
 #| out-width: "100%"
-
 # Calculate indices
 indexes <- image_index(img, index = c("R, G, B, GRAY, L, B-G/(B+G)"))
 
@@ -116,12 +114,12 @@ To segment objects, pliman uses the threshold technique (Otsu, 1979)^[Otsu, N. 1
 ```{r}
 #| out-width: "100%"
 
-image_index(img, index = "R")
-otsu(indexes$R)
+image_index(img, index = "GRAY")
+otsu(indexes$GRAY)
 
 bin <- 
   image_binary(img,  
-               index = "R")
+               index = "GRAY")
 
 ```
 
@@ -130,22 +128,23 @@ Note that some leaf pixels were considered background and some background pixels
 ```{r}
 #| out-width: "100%"
 bin <- image_binary(img, 
-                    index = "R", 
+                    index = "GRAY", 
                     fill_hull = TRUE,
                     plot =  FALSE)[[1]]
 bin2 <- image_binary(img, 
-                     index = "R", 
+                     index = "GRAY", 
                      fill_hull = TRUE,
                      filter = 10,
                      plot =  FALSE)[[1]]
 bin3 <- image_binary(img, 
-                     index = "R",
+                     index = "GRAY",
                      fill_hull = TRUE,
                      opening = 10,
                      plot =  FALSE)[[1]]
 
 image_combine(bin, bin2, bin3, ncol = 3)
 ```
+
 
 ## Segmentation
 In pliman, the following functions can be used to segment objects in images.
@@ -162,7 +161,7 @@ Both functions segment the image based on the value of some image index, which c
 ```{r}
 #| out-width: "100%"
 image_segment(img,
-              index = "R",
+              index = "G",
               fill_hull = TRUE,
               opening = 5)
 ```
@@ -377,11 +376,10 @@ The `analyze_objects()` function is the key function in pliman to calculate a ra
 #| out-width: "100%"
 leaves <- image_import("flax2.jpg", plot = TRUE)
 
-image_index(leaves)
+image_index(leaves, "RGB", ncol = 3)
 
 leaves_meas <-
   analyze_objects(leaves,
-                  # show_lw = TRUE,
                   marker = "id",
                   index = "B")
 
