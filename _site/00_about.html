@@ -151,13 +151,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dia_01.html" class="sidebar-item-text sidebar-link">
+  <a href="./01_dia1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Scripts - 03/09/2025</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dia_02.html" class="sidebar-item-text sidebar-link">
+  <a href="./02_dia2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Scripts - 04/09/2025</span></a>
   </div>
 </li>
@@ -206,7 +206,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="header-section-number">2</span> Restoring the R environment with renv</h1>
 <p>This command will install all required packages with the exact versions recorded in the <code>renv.lock</code> file.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">renv</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/renv/reference/restore.html">restore</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"renv"</span><span class="op">)</span></span>
+<span><span class="fu">renv</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/renv/reference/activate.html">activate</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">renv</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/renv/reference/restore.html">restore</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you later add new packages, run:</p>
 <div class="cell">
@@ -251,6 +253,8 @@ Uma entrada BibTeX para usuários(as) de LaTeX é
 <pre><code>D:/htp_cbmp2025
 ├── 00_about.qmd
 ├── 00_about.rmarkdown
+├── 01_dia1.qmd
+├── 02_dia2.qmd
 ├── 20231001_144226.jpg
 ├── 20231001_153711.jpg
 ├── 20231001_160425.jpg
@@ -324,8 +328,6 @@ Uma entrada BibTeX para usuários(as) de LaTeX é
 │   ├── P6_Cápsulas_1_2024-11-26-12-06-34.jpg
 │   └── proc
 ├── capsulas.jpg
-├── dia_01.qmd
-├── dia_02.qmd
 ├── dose_response
 │   ├── img_P1_0,01.JPG
 │   ├── img_P1_0,1.JPG
@@ -475,7 +477,17 @@ Uma entrada BibTeX para usuários(as) de LaTeX é
 │   ├── wheat_ndsu_shp.rds
 │   └── wheat_ufv.tif
 ├── _quarto.yml
-└── _site</code></pre>
+└── _site
+    ├── 00_about.html
+    ├── capa.jpg
+    ├── dia_01.html
+    ├── dia_01_files
+    ├── dia_02.html
+    ├── dia_02_files
+    ├── index.html
+    ├── paper.png
+    ├── search.json
+    └── site_libs</code></pre>
 </div>
 </div>
 <p>The material in HTML (_site/index.html) will give you access to the site, where you can view all examples, with codes and outputs. To reproduce the material, simply use the *.qmd files.</p>
@@ -1146,77 +1158,79 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval = FALSE}</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="in">renv::restore()</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="in">install.packages("renv")</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="in">renv::activate()</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="in">renv::restore()</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>If you later add new packages, run:</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval = FALSE}</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="in">renv::snapshot()</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>If you later add new packages, run:</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval = FALSE}</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="in">renv::snapshot()</span></span>
 <span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="fu"># Citation</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![](paper.png)</span><span class="co">](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13803)</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="fu"># Citation</span></span>
 <span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>To cite the pliman package in your works, use the following reference:</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![](paper.png)</span><span class="co">](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13803)</span></span>
 <span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;  Olivoto T (2022). “Lights, camera, pliman! An R package for plant image analysis.” **Methods in Ecology</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="at">  and Evolution**, 13(4), 789-798. doi:10.1111/2041-210X.13803 </span><span class="ot">&lt;https://doi.org/10.1111/2041-210X.13803&gt;</span><span class="at">.</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">"pliman"</span>)</span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="fu"># Scripts</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>To cite the pliman package in your works, use the following reference:</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;  Olivoto T (2022). “Lights, camera, pliman! An R package for plant image analysis.” **Methods in Ecology</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="at">  and Evolution**, 13(4), 789-798. doi:10.1111/2041-210X.13803 </span><span class="ot">&lt;https://doi.org/10.1111/2041-210X.13803&gt;</span><span class="at">.</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">"pliman"</span>)</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>The .zip file contains a folder with the static website, structured as follows:</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="fu"># Scripts</span></span>
 <span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo=FALSE}</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="in">library(fs)</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="in">fs::dir_tree("D:/htp_cbmp2025", recurse = 1)</span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>The material in HTML (<span class="sc">\_</span>site/index.html) will give you access to the site, where you can view all examples, with codes and outputs. To reproduce the material, simply use the <span class="sc">\*</span>.qmd files.</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>The .zip file contains a folder with the static website, structured as follows:</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo=FALSE}</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="in">library(fs)</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="in">fs::dir_tree("D:/htp_cbmp2025", recurse = 1)</span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>For reproduction, it is suggested to set the <span class="in">`htp_cbmp2025`</span> folder as the default directory. You can easily set the directory by running the following command, assuming you have the <span class="in">`00_about.qmd`</span> script open.</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>The material in HTML (<span class="sc">\_</span>site/index.html) will give you access to the site, where you can view all examples, with codes and outputs. To reproduce the material, simply use the <span class="sc">\*</span>.qmd files.</span>
 <span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a><span class="in">pliman::set_wd_here()</span></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="fu"># Acknowledgments</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>For reproduction, it is suggested to set the <span class="in">`htp_cbmp2025`</span> folder as the default directory. You can easily set the directory by running the following command, assuming you have the <span class="in">`00_about.qmd`</span> script open.</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="in">pliman::set_wd_here()</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>The availability of these mosaics is essential for the continued improvement of tools like {pliman}. I would like to extend my gratitude to <span class="co">[</span><span class="ot">\@FilipeMathias</span><span class="co">](https://www.linkedin.com/in/filipe-matias-27bab5199/)</span> and <span class="co">[</span><span class="ot">Alcinei Azevedo</span><span class="co">](https://www.expstat.com/)</span> for providing various materials related to high-throughput phenotyping, and to <span class="co">[</span><span class="ot">\@MaiconNardino</span><span class="co">](https://www.linkedin.com/in/maicon-nardino-091253268/)</span> and <span class="co">[</span><span class="ot">\@CaiqueSilva</span><span class="co">](https://www.linkedin.com/in/caique-machado-e-silva-404415154/)</span> from UFV for providing the multispectral orthomosaics of the wheat field.</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a><span class="fu"># Acknowledgments</span></span>
 <span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>Additionally, special thanks to <span class="co">[</span><span class="ot">Arthur Bernardeli</span><span class="co">](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/)</span> for providing the digital surface models, digital terrain models, and masks related to the soybean fields, and <span class="co">[</span><span class="ot">Gustavo Nandi</span><span class="co">](https://www.linkedin.com/in/gustavo-nandi-035905127/)</span> for providing the orthomosaic from a potato breeding field.</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>The availability of these mosaics is essential for the continued improvement of tools like {pliman}. I would like to extend my gratitude to <span class="co">[</span><span class="ot">\@FilipeMathias</span><span class="co">](https://www.linkedin.com/in/filipe-matias-27bab5199/)</span> and <span class="co">[</span><span class="ot">Alcinei Azevedo</span><span class="co">](https://www.expstat.com/)</span> for providing various materials related to high-throughput phenotyping, and to <span class="co">[</span><span class="ot">\@MaiconNardino</span><span class="co">](https://www.linkedin.com/in/maicon-nardino-091253268/)</span> and <span class="co">[</span><span class="ot">\@CaiqueSilva</span><span class="co">](https://www.linkedin.com/in/caique-machado-e-silva-404415154/)</span> from UFV for providing the multispectral orthomosaics of the wheat field.</span>
 <span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a><span class="fu"># Similar tools</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>Additionally, special thanks to <span class="co">[</span><span class="ot">Arthur Bernardeli</span><span class="co">](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/)</span> for providing the digital surface models, digital terrain models, and masks related to the soybean fields, and <span class="co">[</span><span class="ot">Gustavo Nandi</span><span class="co">](https://www.linkedin.com/in/gustavo-nandi-035905127/)</span> for providing the orthomosaic from a potato breeding field.</span>
 <span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>This course will primarily focus on the {pliman} and {plimanShiny} R packages. However, these are not the only tools available for high-throughput phenotyping (HTP) in R. I highly recommend exploring the pioneering R package <span class="co">[</span><span class="ot">FIELDimageR</span><span class="co">](https://github.com/OpenDroneMap/FIELDimageR)</span>, as well as its complementary extensions <span class="co">[</span><span class="ot">FIELDimageR-Extra</span><span class="co">](https://github.com/filipematias23/FIELDimageR.Extra)</span> and <span class="co">[</span><span class="ot">FIELDimageR-QGIS</span><span class="co">](https://github.com/filipematias23/FIELDimageR-QGIS)</span>, which offer additional functionalities for enhanced HTP analysis.</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a><span class="fu"># Similar tools</span></span>
 <span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a><span class="fu"># License</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>This course will primarily focus on the {pliman} and {plimanShiny} R packages. However, these are not the only tools available for high-throughput phenotyping (HTP) in R. I highly recommend exploring the pioneering R package <span class="co">[</span><span class="ot">FIELDimageR</span><span class="co">](https://github.com/OpenDroneMap/FIELDimageR)</span>, as well as its complementary extensions <span class="co">[</span><span class="ot">FIELDimageR-Extra</span><span class="co">](https://github.com/filipematias23/FIELDimageR.Extra)</span> and <span class="co">[</span><span class="ot">FIELDimageR-QGIS</span><span class="co">](https://github.com/filipematias23/FIELDimageR-QGIS)</span>, which offer additional functionalities for enhanced HTP analysis.</span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener"&gt;&lt;img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/gemsr/license.jpg" alt="Creative Commons License" style="border-width:0" width="150" height="40"/&gt;&lt;/a&gt;&lt;br /&gt;This content is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;CC BY-NC-SA 4.0&lt;/a&gt;. The human-readable summary of the license states that you have the right to:</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="fu"># License</span></span>
 <span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Share** — copy and redistribute the material in any medium or format.</span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Adapt** — remix, transform, and build upon the material.</span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>**Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener"&gt;&lt;img src="https://raw.githubusercontent.com/TiagoOlivoto/tiagoolivoto/master/static/img/gemsr/license.jpg" alt="Creative Commons License" style="border-width:0" width="150" height="40"/&gt;&lt;/a&gt;&lt;br /&gt;This content is licensed under a &lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"&gt;CC BY-NC-SA 4.0&lt;/a&gt;. The human-readable summary of the license states that you have the right to:</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Share** — copy and redistribute the material in any medium or format.</span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Adapt** — remix, transform, and build upon the material.</span>
 <span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>Under the following terms</span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>**Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</span>
 <span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>**Non-Commercial** — You may not use the material for commercial purposes.</span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>Under the following terms</span>
 <span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>**ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>**Non-Commercial** — You may not use the material for commercial purposes.</span>
 <span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>**No additional restrictions** — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>**ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>**No additional restrictions** — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

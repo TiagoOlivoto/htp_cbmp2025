@@ -1,0 +1,640 @@
+---
+title: "Scripts - 04/09/2025"
+---
+
+# Drone and Satelite images
+
+In this material, the mosaics used for application are described as follows:
+
+| Name | Width | Height | Bands | Description | Source |   |   |   |   |
+|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|
+| dsm folder |  |  |  |  |  |  |  |  |  |
+| `dsm.tif` | 2837 | 2770 | Single layer | Digital Surface Model | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| `dtm.tif` | 2837 | 2770 | Single layer | Digital Terrain Model | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| `mask.tif` | 2837 | 2770 | Single layer | DSM Mask | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| `ortho.tif` | 5669 | 6026 | R, G, B | Mosaic of a soybean breeding field | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| growth_models folder |  |  |  |  |  |  |  |  |  |
+| `DAP_4_05-11-2021.tif` | \- | \- | Single layer | Digital Surface Model | [Filipe Mathias](https://github.com/filipematias23/Bison-Fly) |  |  |  |  |
+| `...` | ... | ... | ... | ... |  |  |  |  |  |
+| `DAP_80_07-26-2021.tif` | \- | \- | Single layer | Digital Surface Model | [Filipe Matias](https://github.com/filipematias23/Bison-Fly) |  |  |  |  |
+| lettuce folder |  |  |  |  |  |  |  |  |  |
+| `lettuce.tif` | 1456 | 2998 | R,G,B | Orthomosaic of a lettuce experiment | [This paper](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0274731) |  |  |  |  |
+| maturity folder (10 rasters) |  |  |  |  |  |  |  |  |  |
+| `cropped_09-10-2024` | 10812 | 1460 | R,G,B | Time series of a soybean field | [Arthur Bernardeli](https://www.linkedin.com/in/arthur-bernardeli-5a1a0b5a/) |  |  |  |  |
+| `...` | ... | ... | ... | ... | ... |  |  |  |  |
+| `cropped_10-11-2024` | 10812 | 1460 | R,G,B |  |  |  | Time series of a soybean field |  |  |
+| potato folder |  |  |  |  |  |  |  |  |  |
+| `potato.tif` | 5202 | 4665 | R, G, B | Mosaic of a potato breeding field | [Gustavo Nandi](https://www.linkedin.com/in/gustavo-nandi-035905127/) |  |  |  |  |
+| wheat folder |  |  |  |  |  |  |  |  |  |
+| `wheat_ndsu.tif` | 768 | 3120 | B, G, R, RE, NIR | Mosaic of a wheat breeding area | [Filipe Matias](https://github.com/filipematias23/Bison-Fly) |  |  |  |  |
+| `wheat_ufv.tif` | 2029 | 2120 | R,G,B,RE,NIR |  | [Maicon Nardino](https://www.linkedin.com/in/maicon-nardino-091253268/) |  |  |  |  |
+
+In this material, I will show some examples that uses functions from {`pliman`} package, but all the practical exercices will be made using {`plimanshiny`}.
+
+## Orthomosaics
+
+Orthomosaic (`SpatRasters`) objects can be imported and exported using the functions provided by the package. First, an orthomosaic image is imported as a `SpatRaster` object using the `mosaic_input()` function. The image can then be visualized in RGB format using the `mosaic_plot_rgb()` function. For interactive mapping, the `mosaic_view()` function can be used, specifying the RGB bands (e.g., R = 3, G = 2, B = 1) to adjust the display of the map. Additionally, the orthomosaic can be exported to a file using the `mosaic_export()` function.
+
+```{r}
+library(pliman)
+
+# Import an orthomosaic image as a SpatRaster object
+mosaic <- mosaic_input("wheat/wheat_ndsu.tif")
+
+mosaic_plot_rgb(mosaic, stretch = "lin")
+
+# Create an interactive map using the RGB bands (R = 3, G = 2, B = 1)
+bm <- mosaic_view(mosaic, 
+                  quantiles = c(0, .97),
+                  max_pixels = 4e6,
+                  r = 3, # Red channel
+                  g = 2, # Green channel
+                  b = 1) # Blue channel
+bm
+# Export the mosaic to a file (uncomment the line below to run)
+# mosaic_export(mosaic, "my_mosaic.tif")
+```
+
+## Shapefile
+
+### Create
+
+To create a shapefile grid over the mosaic, the `shapefile_build()` function is used, specifying the number of rows and columns for the grid. This allows for the segmentation of the mosaic into plots that can be individually analyzed.
+
+```{r}
+#| eval: false
+
+# Create a shapefile grid over the mosaic with specified rows and columns
+shp <- shapefile_build(mosaic,
+                       basemap = bm,
+                       layout = "btlr",
+                       plot_width = 1.2,
+                       plot_height = 2,
+                       ncol = 11, # Number of columns
+                       nrow = 20) # Number of rows
+
+bm + shapefile_view(shp, attribute = "plot_id")
+
+# see the size of plots
+shapefile_measures(shp)
+shapefile_export(shp, "myfirsshape.shp")
+```
+
+### Import and Export
+
+Shapefiles can be imported using the `shapefile_input()` function, which reads shapefile objects from a file. After importing the shapefile, the mosaic can be plotted in RGB using `mosaic_plot_rgb()`, and the shapefile can be overlaid on the mosaic using the `shapefile_plot()` function, which allows customization of the line width and other graphical parameters.
+
+```{r}
+# Import a shapefile object from a file
+shp <- shapefile_input("wheat/wheat_ndsu_shp.rds")
+
+# Plot the mosaic in RGB
+mosaic_plot_rgb(mosaic, stretch = "lin")
+
+# Overlay the imported shapefile on the mosaic with customized line width
+shapefile_plot(shp, add = TRUE, lwd = 2, col = "red")
+
+bm + shapefile_view(shp, attribute = "plot_id")
+```
+
+## Vegetation Indexes
+
+A variety of vegetation indexes are available in pliman, as detailed on Tiago Olivoto's website. These indexes can be computed using the `mosaic_index()` function. By specifying the RGB channels of the mosaic (e.g., R = 1, G = 2, B = 3) and selecting the desired indexes (e.g., "NGRDI" and "GLI"), the function calculates the indexes, which can be used for further analysis.
+
+```{r}
+# Calculate vegetation indexes (e.g., NGRDI and GLI) using the mosaic's RGB channels
+ind <- mosaic_index(mosaic, 
+                    b = 1, # Blue channel
+                    g = 2, # Green channel
+                    r = 3, # Red channel
+                    re = 4, # Red Edge channel
+                    nir = 5, # Near-Infrared channel
+                    index = c("NDVI", "NDRE", "(NIR-R) / (NIR+R)")) # List of vegetation indexes to compute
+mosaic_plot(ind[[1]])
+mosaic_hist(ind[[1]])
+
+# segment a mosaic
+segmented <- 
+  mosaic_segment(mosaic, 
+                 b = 1, # Blue channel
+                 g = 2, # Green channel
+                 r = 3, # Red channel
+                 re = 4, # Red Edge channel
+                 nir = 5, # Near-Infrared channel
+                 index = "NDVI")
+
+mosaic_plot_rgb(segmented, stretch = "lin")
+
+# segment a mosaic and return a mask
+segmented <- 
+  mosaic_segment(mosaic, 
+                 b = 1, # Blue channel
+                 g = 2, # Green channel
+                 r = 3, # Red channel
+                 re = 4, # Red Edge channel
+                 nir = 5, # Near-Infrared channel
+                 index = "NDVI",
+                 invert = TRUE,
+                 return = "mask")
+mosaic_plot(segmented)
+
+
+# extract values for each plot
+indexes <- mosaic_extract(ind, shp)
+indexes
+
+```
+
+## The `mosaic_analyze()` Function
+
+`mosaic_analyze()` is the cornerstone function in pliman for **high-throughput phenotyping**. It enables users to efficiently process orthomosaics and extract a wealth of data from satellite or drone imagery with just a few lines of code. In most cases, all you need is an orthomosaic (or even a `.jpg` image from a cellphone) and the right function parameters to unlock its full potential.
+
+```{r}
+# Analyze the mosaic using the defined shapefile and vegetation indexes
+res <- 
+  mosaic_analyze(mosaic,
+                 b = 1, # Blue channel
+                 g = 2, # Green channel
+                 r = 3, # Red channel
+                 re = 4, # Red Edge channel
+                 nir = 5, # Near-Infrared channel
+                 basemap = bm,                      # Basemap for visualization
+                 shapefile = shp,                   # Shapefile with plots
+                 plot_index = c("NDVI", "NDRE"),    # Vegetation indexes to compute
+                 summarize_fun = c("median", "mean", "min", "max"), # Summary statistics for each plot
+                 attribute = "median.NDVI")        # Attribute for mapping (e.g., NGRDI color scale)
+# Display the result plot
+res$result_plot
+
+# ndvi plus shapefile
+bm + shapefile_view(res$result_plot, attribute = "median.NDVI")
+```
+
+## Segment the plots
+
+```{r}
+res <- 
+  mosaic_analyze(mosaic,
+                 b = 1, # Blue channel
+                 g = 2, # Green channel
+                 r = 3, # Red channel
+                 re = 4, # Red Edge channel
+                 nir = 5, # Near-Infrared channel
+                 basemap = bm,  # Basemap for visualization
+                 shapefile = shp,
+                 plot_index = "NDVI",   
+                 attribute = "median.NDVI",
+                 segment_plot = TRUE)   # compute a mask and canopy coverage
+
+bm +
+  shapefile_view(res$result_plot, attribute = "coverage")
+```
+
+## Count and measure plants
+
+In the example below, `mosaic_analyze()` is used to count, measure, and extract image indices at the block, plot, and individual levels in a lettuce trial. This process is based on an orthomosaic image, as described in [this paper](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0274731).
+
+> A big thank you to the authors for providing the full-resolution `.tif` file, which enabled me to advance several functionalities in pliman, including high-throughput image analysis and data extraction at multiple levels. This kind of data sharing is invaluable for driving further innovation and tool development.
+
+The trial was conducted using a randomized complete block design with four blocks. The researchers tested the effects of Aspergillus niger application (six different levels, combining both concentration and formulation) and three levels of phosphorus (0%, 50%, 100%) on lettuce growth.
+
+![Field Experiment](https://github.com/TiagoOlivoto/images/raw/refs/heads/master/pliman/lettuce/field.png){width="1320"}
+
+In the `pliman`s shapefile, each plot within the four blocks is represented by a unique `plot_id`, such as "P0001," "P0002," etc. These correspond to the following treatments:
+
+| Plot ID | Inoculant | Phosphorus (%) |
+|---------|-----------|----------------|
+| P0001   | NI        | 0              |
+| P0002   | NI        | 50             |
+| P0003   | NI        | 100            |
+| P0004   | TS        | 0              |
+| P0005   | TS        | 50             |
+| P0006   | TS        | 100            |
+| P0007   | GR2       | 0              |
+| P0008   | GR2       | 50             |
+| P0009   | GR2       | 100            |
+| P0010   | GR6       | 0              |
+| P0011   | GR6       | 50             |
+| P0012   | GR6       | 100            |
+| P0013   | SC2       | 0              |
+| P0014   | SC2       | 50             |
+| P0015   | SC2       | 100            |
+| P0016   | SC6       | 0              |
+| P0017   | SC6       | 50             |
+| P0018   | SC6       | 100            |
+
+### Importing the needed files
+
+The `mosaic_input()` function is used to load the mosaic of a lettuce field, and the `shapefile_input()` function is used to load the corresponding shapefile that delineates the plots. You can also create a shapefile with `shapefile_build()` (as in the previous section) or simply define the `nrow` and `ncol` arguments in `mosaic_analyze()`.
+
+In this example, a basemap is created using a mosaic image to serve as the foundation for further visualizations. While creating a basemap is not mandatory, it can significantly speed up the process, as functions like `mosaic_analyze()`, `shapefile_build()`, and `shapefile_edit()` will automatically render a leaflet map if one is not provided. By pre-creating the basemap, you avoid the overhead of rendering multiple maps, making the workflow more efficient.
+
+Additionally, a shapefile layer is overlaid on top of the basemap to display the levels of the inoculante factor.
+
+```{r}
+mos <-    mosaic_input("lettuce/lettuce.tif")
+shp <- shapefile_input("lettuce/lettuce.rds")
+
+# create a basemap
+bm <- mosaic_view(mos, 
+                  r = 1, g = 2, b = 3,
+                  max_pixels = 2e6) # defaults is 1e6.. so here, a bit higher resolution is used
+bm + shapefile_view(shp, attribute = "p", color_regions = ggplot_color(3))
+
+```
+
+### Analyzing the mosaic
+
+There function `mosaic_analyze()` is all you need now. The vegetation indexes computed for each plant are defined in the object `indexes`. Here, the Normalized Green Red Difference Index (NGRDI), Green Leaf Index (GLI), and Blue Green Index (BGI) are used. You can find a list with all build-in vegetation indexes in pliman [here](https://nepem-ufsc.github.io/pliman/articles/indexes.html#rgb-color-space).
+
+By setting `segment_individuals = TRUE`, `mosaic_analyze()` shifts its focus to the individual plant level. Using a threshold-based segmentation method, it isolates each plant within a plot, enabling precise counting and measurement, provided that a higher contrast between plant and soi. While the function can also handle complex backgrounds with additional arguments, that's not the focus here. Instead, the power of this approach lies in its ability to break down each plot into individual components, providing a detailed analysis of plant morphology, size, and distribution. This transforms high-throughput phenotyping by moving from a broad plot-level perspective to an in-depth examination of each plant, unlocking a new level of precision and insight.
+
+> For context, in the original study, the researchers manually measured the diameter of the four central plants in each plot. With `mosaic_analyze()`, this process is not only automated but also expanded to include every plant in the plot, providing more comprehensive data in a fraction of the time.
+
+Using `segment_index = "GLI"`, we configure the analysis to segment soil and identify individual plants based on the GLI index. The analysis will return both summary statistics for each plot and a map showing the segmented individual plants.
+
+```{r}
+indexes <- c("NGRDI", "vNDVI")
+an <- mosaic_analyze(
+  mosaic = mos,
+  basemap = bm,
+  r = 1,
+  g = 2,
+  b = 3,
+  shapefile = shp,
+  plot_index = indexes,
+  segment_individuals = TRUE,
+  segment_index = "GLI"
+)
+
+bm + shapefile_view(an$result_indiv,
+                    attribute = "diam_mean")
+```
+
+Below, you can see the results at the individual plant level. Each plant within a plot is identified, segmented, and color-coded based on its measured characteristics (e.g., mean vegetation indices). While you can use the attribute argument in `mosaic_analyze()` to control these visualizations, there's no need to worry—new plots can easily be generated after the results are computed, giving you full flexibility in how the data is displayed.
+
+For each plot, detailed summary statistics are also returned, allowing for in-depth analysis of plant performance across the entire experiment.
+
+```{r}
+an$map_indiv
+```
+
+We can gain deeper insights by utilizing the results generated from `mosaic_analyze()`. Below, the data is grouped by the different levels of the inoculante factor to explore how it influences the analysis.
+
+```{r}
+# see the results averaged by the combination of inoculante and p factors
+library(dplyr)
+library(emmeans)
+library(ggplot2)
+dfino <- 
+  an$result_plot_summ |> 
+  group_by(plot_id, inoculante, p) |> 
+  summarise(across(where(is.numeric), mean))
+
+# inoculante levels
+bm + shapefile_view(dfino, attribute = "inoculante", color_regions = ggplot_color(6))
+
+# phospurus level
+bm + shapefile_view(dfino, attribute = "p", color_regions = ggplot_color(3))
+
+# Analysis of variance
+dfanova <- 
+  an$result_plot_summ |> 
+  mutate(across(c(p, column, inoculante), as.factor))
+
+mod <- aov(diam_mean ~ inoculante * p + column, data = dfanova)
+anova(mod)
+emm_ino <- emmeans(mod, ~ inoculante)
+emm_p <- emmeans(mod, ~ p)
+
+
+pin <- 
+  plot(emm_ino, comparisons = TRUE, CIs = FALSE) +
+  xlim(0.15, 0.23) +
+  labs(x = "Mean diameter (cm)", y = "Inoculante")
+
+pp <- 
+  plot(emm_p, comparisons = TRUE, CIs = FALSE) +
+  xlim(0.15, 0.23) +
+  labs(x = "Mean diameter (cm)", y = "Phosphorus level (%)")
+
+library(patchwork)
+pin/ pp
+
+```
+
+## Mapping plants within plots
+
+In this example, we use an RGB orthomosaic from a potato field to analyze and segment individual plants within the plots. The analysis involves loading the mosaic and corresponding shapefile, cropping the mosaic to the area defined by the shapefile, and then segmenting individual plants using a custom vegetation index. When `map_individuals = TRUE` is used, important metrics such as the average distance between plants and the coefficient of variation for each cropping row are also computed.
+
+```{r}
+#| eval: false
+# Load orthomosaic and shapefile
+mos <-    mosaic_input("potato/potato.tif")
+shp <- shapefile_input("potato/potato_shp.rds")
+
+bm <- mosaic_view(mos, max_pixels = 6e6)
+bm + shapefile_view(shp)
+
+res <-
+  mosaic_analyze(
+    mosaic = mos,
+    basemap = bm,
+    shapefile = shp,
+    plot_index = "GLI",
+    segment_individuals = TRUE,
+    map_individuals = TRUE,
+    map_direction = "horizontal",    # default
+    attribute = "cv"
+  )
+
+pal <- c( "#fde725", "#5ec962", "#21918c", "#3b528b", "#440154")
+p1 <- shapefile_view(res$result_plot_summ,
+                     attribute = "cv",
+                     color_regions = pal)
+p2 <- shapefile_view(res$result_indiv,
+                     type = "centroid",
+                     attribute = "area")
+
+(bm + p1) | p2
+
+```
+
+The interactive map above shows the segmented potato plants within each row. Note that some plots were not rendered due to the absence of identified plants. It is important to highlight the structure of the `res` object:
+
+```{r}
+#| eval: false
+names(res)
+```
+
+When `map_individuals = TRUE` is used, the `result_individ_map` object contains the distances between each plant within the plots. By default, the mapping occurs in the horizontal direction.
+
+```{r}
+#| eval: false
+res[["result_individ_map"]][["distances"]][["B01_P0001"]]
+```
+
+The objects `means` and `cvs` hold the average distances and coefficients of variation, respectively.
+
+```{r}
+#| eval: false
+#| code-fold: true
+#| code-summary: "Show me the code"
+library(patchwork)
+pmean <-
+  ggplot(res$result_plot_summ, aes(x = mean_distance)) +
+  geom_histogram() +
+  labs(x = "Average distance between plants",
+       y = "Number of plots")
+
+pcv <-
+  ggplot(res$result_plot_summ, aes(x = cv)) +
+  geom_histogram(bins = 10) +
+  labs(x = "Coefficient of variation (%)",
+       y = "Number of plots")
+
+pmean + pcv
+
+
+```
+
+Below, we’ll explore two contrasting plots to demonstrate how this information can be valuable for assessing plot uniformity.
+
+```{r}
+#| eval: false
+
+library(dplyr)
+par(mfrow = c(2, 1))
+p1 <- 
+  res$result_indiv |> 
+  filter(plot_id == "P0184")
+
+
+# plot 
+p1plot <- 
+  res$result_plot_summ |> 
+  filter(plot_id == "P0184")
+
+
+plot1 <- mosaic_crop(mos, shapefile = p1plot, buffer = 0.2)
+coords <- p1[, c("x", "y")] |> sf::st_drop_geometry() |> arrange(x)
+mosaic_plot_rgb(plot1, main = "P0184: Average distance: 0.243 m; CV: 14.1%")
+lines(coords, lwd = 2)
+shapefile_plot(p1plot, add = TRUE, border = "blue", lwd = 3)
+points(p1$x, p1$y, pch = 16,  cex = 2, col = "red")
+
+
+
+p2 <- 
+  res$result_indiv |> 
+  filter(plot_id == "P0204")
+p2plot <- 
+  res$result_plot_summ |> 
+  filter(plot_id == "P0204")
+
+plot2 <- mosaic_crop(mos, shapefile = p2plot, buffer = 0.2)
+coords2 <- p2[, c("x", "y")] |> sf::st_drop_geometry() |> arrange(x)
+mosaic_plot_rgb(plot2, main = "P0204: Average distance: 0.325 m; CV: 64.0%")
+lines(coords2, lwd = 2)
+shapefile_plot(p2plot, add = TRUE, border = "blue", lwd = 3)
+points(p2$x, p2$y, pch = 16,  cex = 2, col = "red")
+
+
+```
+
+## Canopy Height Models
+
+A Canopy Height Model (CHM) represents the height of vegetation or structures above the ground surface, making it a crucial tool for analyzing vegetation structure and biomass. It is derived by subtracting a Digital Terrain Model (DTM), which shows the bare earth surface, from a Digital Surface Model (DSM), which captures the elevation of all surface objects,like plants. By comparing these two models, the CHM provides detailed insights into the height of vegetation, enabling accurate assessments of canopy cover and plant growth in agricultural or forested landscapes.
+
+### DSM and DTM are available
+
+```{r }
+# Load DSM, DTM, mask and shapefile
+dsm <- mosaic_input("dsm/dsm.tif")
+dtm <- mosaic_input("dsm/dtm.tif")
+msk <- mosaic_input("dsm/mask.tif")
+ortho <- mosaic_input("dsm/ortho.tif")
+shp <- shapefile_input("dsm/shape.rds")
+
+# Visualize the DSM and DTM side by side. 
+# The argument nc = 1 means that the plots will be displayed in a single column.
+mosaic_plot(c(dsm, dtm))
+
+# Compute the Canopy Height Model (CHM) by subtracting the DTM from the DSM.
+# The `mask` parameter specifies the regions to be used, and `mask_soil = FALSE` 
+# means that areas identified by the mask are considered non-soil (i.e., representing the plants).
+res <- mosaic_chm(dsm = dsm,
+                  dtm = dtm,
+                  mask = msk,
+                  mask_soil = FALSE)  
+
+# Extract canopy height values from the CHM using the provided shapefile.
+# This will associate the height values with the polygons in the shapefile.
+chmvals <- mosaic_chm_extract(res, shp)
+
+# Visualize the DSM with a custom color palette to represent different elevation levels.
+pal <- custom_palette(c("#8B4513", "#B2DF8A", "forestgreen"), n = 10)
+bm <- mosaic_view(dsm, color_regions = pal)
+
+# Overlay the shapefile on top of the DSM visualization, using the "coverage" attribute 
+# from the shapefile to define the regions of interest.
+bm + shapefile_view(chmvals, attribute = "q95")
+```
+
+### Building DTM from DSM
+
+In field experiments, the Digital Terrain Model (DTM) is frequently obtained before sowing and represents the bare soil. But, if we could derivate DTM from DSM? If a DTM is not provided, `mosaic_chm()` will derive DTM from DSM using an interpolation strategy.
+
+```{r }
+res2 <- mosaic_chm(
+  dsm,
+  mask = msk,
+  window_size = c(4, 4),
+  mask_soil = FALSE
+)
+
+# Extract CHM values
+chmvals2 <- mosaic_chm_extract(res2, shp) 
+
+# Quantile 95
+bm + shapefile_view(chmvals2, attribute = "q95")
+
+# Entropy
+bm + shapefile_view(chmvals2, attribute = "entropy")
+
+
+# a closer look
+zoom1 <- shp |> filter(plot_id == "P0267") |> sf::st_buffer(3)
+zoom2 <- shp |> filter(plot_id == "P0174") |> sf::st_buffer(3)
+c1 <- mosaic_crop(ortho, shapefile = zoom1)
+c2 <- mosaic_crop(ortho, shapefile = zoom2)
+
+par(mfrow = c(1, 2))
+mosaic_plot_rgb(c1)
+mosaic_plot_rgb(c2)
+par(mfrow = c(1, 1))
+
+```
+
+## Plant maturity
+
+```{r}
+library(pliman)
+library(tidyverse)
+mosaic <- mosaic_input("maturity/cropped_09-17-2024.tif")
+shapefile <- shapefile_input("maturity/shape_mat.rds")
+ngrdi <-
+  rio::import("maturity/time_series_maturity_vndvi5.xlsx", setclass = "tbl") |>
+  select(block, plot_id, maturity) |>
+  rename(mat_vndvi = maturity)
+
+
+mat <-
+  left_join(shapefile, ngrdi) |>
+  mutate(mat_vndvi = mat_vndvi,
+         diff = (mat_vndvi) - maturity_ground) |>
+  mutate(diff_class = case_when(
+    between(abs(diff), 0, 3) ~ "0 a 3",
+    between(abs(diff), 3, 6) ~ "3 a 6",
+    between(abs(diff), 6, 9) ~ "6 a 9",
+    FALSE ~ "> 9"
+  )) |>
+  drop_na()
+
+
+dfccc <-
+  mat |>
+  sf::st_drop_geometry() |>
+  as.data.frame() |>
+  ccc(maturity_ground, mat_vndvi) |>
+  mutate(rho = paste0("rho[c]:~", round(ccc, 4)),
+         rmse = paste0("RMSE:~", round(rmse, 4)),
+         r = paste0("r:~~~", round(r, 4)))
+
+
+matplot <- 
+  mat |>
+  ggplot(aes(maturity_ground, mat_vndvi)) +
+  geom_point(size = 3, alpha = 0.7, aes( color = diff_class)) +
+  scale_y_continuous(limits = c(110, 135)) +
+  scale_x_continuous(limits = c(110, 135)) +
+  geom_abline(intercept = 0, slope = 1) +
+  geom_smooth(method = "lm") +
+  labs(x = "Dias para maturação (observado)",
+       y = "Dias para maturação (predito)") +
+  coord_equal() +
+  theme_minimal(base_size = 20) +
+  geom_text(aes(label=rho),
+            x = 112,
+            y = 135,
+            hjust = 0,
+            size = 4,
+            data = dfccc[1, ],
+            parse = TRUE) +
+  geom_text(aes(label=rmse),
+            x = 112,
+            y = 134,
+            hjust = 0,
+            size = 4,
+            data = dfccc[1, ],
+            parse = TRUE) +
+  geom_text(aes(label=r),
+            x = 112,
+            y = 133,
+            hjust = 0,
+            size = 4,
+            data = dfccc[1, ],
+            parse = TRUE)
+
+materr <-
+  mat |>
+  sf::st_drop_geometry() |>
+  as.data.frame() |>
+  group_by(diff_class) |>
+  summarise(n = n())
+
+materrp <- 
+ggplot(materr, aes("A", n, fill = diff_class)) +
+  geom_col() +
+  geom_text(aes(label = n), position = "stack",
+            vjust = 1) +
+  theme_minimal(base_size = 14) +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  labs(y = "Número de parcelas experimentais",
+       title = "Proporção do erro de predição",
+       fill = "abs(dias)")
+
+matplot + materrp +
+  plot_layout(widths = c(0.8, 0.2))
+
+# criar shape
+
+bm <- mosaic_view(mosaic,
+                  r = 1, g = 2, b = 3,
+                  max_pixels = 5e6)
+
+bm + shapefile_view(mat |> sf::st_buffer(0.22), attribute = "mat_vndvi")
+
+
+
+
+
+```
+
+## Timeseries (plimanshiny)
+
+The [`plimanshiny`](https://github.com/NEPEM-UFSC/plimanshiny) package provides a user-friendly interface for analyzing time series data. The package allows users to import, visualize, and analyze time series data, such as satellite images, drone images, and other remote sensing data.
+
+```{r eval=FALSE}
+
+install.packages("pak")
+pak::pkg_install("NEPEM-UFSC/pliman")
+pak::pkg_install("NEPEM-UFSC/plimanshiny")
+
+# Open the app
+library(plimanshiny)
+run_app()
+
+```

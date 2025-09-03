@@ -21,6 +21,8 @@ This command will install all required packages with the exact versions recorded
 
 
 ```{r eval = FALSE}
+install.packages("renv")
+renv::activate()
 renv::restore()
 ```
 

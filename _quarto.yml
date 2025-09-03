@@ -32,8 +32,8 @@ website:
     border: true
     search: true
     contents:
-        - dia_01.qmd
-        - dia_02.qmd
+        - 01_dia1.qmd
+        - 02_dia2.qmd
 
 format:
   html:
