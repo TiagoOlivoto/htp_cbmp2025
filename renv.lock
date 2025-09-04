@@ -6809,7 +6809,7 @@
         "mirai",
         "pak",
         "parallel",
-        "pliman (>= 3.0.0)",
+        "pliman (>= 3.1.1)",
         "plotly",
         "progressr",
         "purrr",
@@ -6850,7 +6850,7 @@
       "RemoteUsername": "nepem-ufsc",
       "RemoteRepo": "plimanshiny",
       "RemoteRef": "master",
-      "RemoteSha": "8d75355578f4d24261a8fd8156a3a0f61c759514"
+      "RemoteSha": "684d99b278a7750cea218d92c38f0d0af9d3c165"
     },
     "plotly": {
       "Package": "plotly",
