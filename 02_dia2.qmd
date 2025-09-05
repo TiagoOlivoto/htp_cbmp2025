@@ -606,6 +606,8 @@ ggplot(materr, aes("A", n, fill = diff_class)) +
        title = "Proporção do erro de predição",
        fill = "abs(dias)")
 
+
+library(patchwork)
 matplot + materrp +
   plot_layout(widths = c(0.8, 0.2))
 
